@@ -38,4 +38,6 @@ function mainCtrl ($scope, pokemonFetcher) {
       pokemonFetcher.post(formData); // Send the data to the back end
       $scope.pokemon.push(formData); // Update the model
     }
+
 }
+

@@ -1,50 +1,52 @@
 
-html, body, #app {
-  width: 100%;
-  height: 100%;
+html {
   padding: 0;
-  margin: 0;
-  font-family: helvetica;
+  margin:auto;
+  width:95%;
+  position:relative;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color:rgb(250,250,250);
+  font-family: Helvetica;
+  background-color:rgb(250,250,250);
+
+}
+
+button{
+  font-family:inherit;
+  font-size 100%;
+  color:#444;
+  border:1px solid #999;
+  background-color: #e6e6e6;
+  cursor:pointer;
+}
+
+header{
+background-color:rgb(240,240,240);
 }
 
 div, ul {
-  margin: 0;
-  padding: 0;
+  width: 70%;
+  margin: auto;
+  height:90%;
 }
 
-.stretch {
-  width: 100%;
-  height: 100%;
+
+li {
+background-color:rgb(255,255,255);
+list-style-type: none;
+border: 1px solid black;
+margin-top: 10px;
+margin-bottom:10px;
+box-shadow:1px 1px 1px #888888;
+border-radius: 2px;
 }
 
-.no-pokemon {
-  background-color: #ED5565;
-}
-
-.center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.h1 {
-  margin: 0;
-  color: white;
-}
 
 .pokemon {
   padding: 20px;
 }
 
 .avatar {
-  width: 100px;
-  height: 100px;
-}
-
-.list {
-  text-align: center;
-  list-style: none;
-  background-color: #4FC1E9;
-  color: white;
+  width: 70%;
+  height: 70%;
 }
