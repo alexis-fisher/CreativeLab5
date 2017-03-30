@@ -24,7 +24,7 @@ function pokemonFetcher ($http) {
   }
 }
 
-function mainCtrl ($scope, pokemonFetcher) {
+function mainCtrl ($scope,$http, pokemonFetcher) {
 
   $scope.pokemon = []
 
@@ -33,11 +33,57 @@ function mainCtrl ($scope, pokemonFetcher) {
       $scope.pokemon = data
     })
   $scope.addPoki = function() {
-      var formData = {name:$scope.Name,avatarUrl:$scope.Url};
-      console.log(formData);
-      pokemonFetcher.post(formData); // Send the data to the back end
-      $scope.pokemon.push(formData); // Update the model
-    }
-
+    if($scope.Name === '') {return;}
+    if($scope.Url === '') {return;}
+    var formData = {name:$scope.Name,avatarUrl:$scope.Url};
+    console.log(formData);
+    pokemonFetcher.post(formData); // Send the data to the back end
+    $scope.create({
+      name: $scope.Name,
+      avatarUrl:$scope.Url,
+      upvotes: 0,
+    });
+    $scope.Name = '';
+    $scope.Url = '';
+  }
+  $scope.create = function(p) {
+    return $http.post('/pokemon',p).success(function(data){
+      $scope.pokemon.push(data);
+    });
+  };
+  $scope.upvote = function(p) {
+      return $http.put('/pokemon/' + p._id + '/upvote')
+      .success(function(data){
+        console.log("upvote worked");
+        p.upvotes +=1;
+       });
+   };
+  $scope.incrementUpvotes = function(p) {
+    $scope.upvote(p);
+  };
+  $scope.downvote = function (p) {
+    return $http.put('/pokemon/' + p._id + '/upvote')
+    .success(function (data) {
+      console.log("downvote worked");
+      p.upvotes -= 1;
+    });
+  };
+  $scope.decrementUpvotes = function(p) {
+    $scope.downvote(p);
+  };
+  
+  $scope.delete = function(p) {
+       $http.delete('/pokemon/' + p._id )
+       .success(function(data){
+           console.log("delete worked");
+        });
+        $scope.getAll();
+  };
+  $scope.getAll = function() {
+       return $http.get('/pokemon').success(function(data){
+         angular.copy(data, $scope.pokemon);
+       });
+  };
+  $scope.getAll();
 }
 

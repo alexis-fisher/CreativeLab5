@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var mongodb = require('mongodb');
+var mongoose = require('mongoose');
+var Comment = mongoose.model('Comment');
 
 // We need to work with "MongoClient" interface in order to connect to a mongodb server.
 var MongoClient = mongodb.MongoClient;
@@ -42,32 +44,51 @@ router.get('/', function(req, res) {
   res.sendFile('index.html', { root: 'public' });
 });
 
-router.get('/pokemon', function(req, res) {
-  console.log("In Pokemon");
-  collection.find().toArray(function(err, result) {
+router.get('/pokemon', function(req, res,next) {
+  Comment.find(function(err, pokemon) {
     if(err) {
       console.log(err);
-    } else if (result.length) {
-      console.log("Query Worked");
-      console.log(result);
-      res.send(result);
-    } else {
-      console.log("No Documents found");
-    }
+      return next(err);
+    } 
+    res.json(pokemon);
   });
 });
 
-router.post('/pokemon', function(req, res) {
-    console.log("In Pokemon Post");
-    console.log(req.body);
-    collection.insert(req.body, function (err, result) {
+router.post('/pokemon', function(req, res,next) {
+    var p = new Comment(req.body);
+    p.save(function (err, p) {
       if (err) {
-        console.log(err);
-      } else {
-        console.log('Inserted %d documents into the "pokemon" collection. The documents inserted with "_id" are:', result.length, result);
-        res.end('{"success" : "Updated Successfully", "status" : 200}');
-      }
+        return next(err);
+      } 
+      res.json(p);
     });
+});
+
+router.get('/pokemon/:p', function(req, res) {
+  res.json(req.p);
+});
+
+router.param('p', function(req, res, next, id) {
+  var query = Comment.findById(id);
+  query.exec(function (err, p){
+    if (err) { return next(err); }
+    if (!p) { return next(new Error("can't find comment")); }
+    req.p = p;
+    return next();
+  });
+});
+
+router.put('/pokemon/:p/upvote', function(req, res, next) {
+  req.p.upvote(function(err, p){ 
+    if (err) { return next(err); }
+    res.json(p);
+  });
+});
+
+router.delete('/pokemon/:p', function(req, res) {
+  console.log("in Delete");
+  req.p.remove();
+  res.json(req.p);
 });
 
 module.exports = router;
@@ -78,10 +99,12 @@ module.exports = router;
 var pokemon = [
   {
     name: 'Anonymous',
-    avatarUrl: 'http://piximus.net/media/35597/hilarious-posts-you-can-only-find-on-tumblr-3.jpg'
+    avatarUrl: 'http://piximus.net/media/35597/hilarious-posts-you-can-only-find-on-tumblr-3.jpg',
+    upvotes: 0
   },
   {
     name: 'Anonymous',
-    avatarUrl: 'http://piximus.net/media/35597/hilarious-posts-you-can-only-find-on-tumblr-5.jpg'
+    avatarUrl: 'http://piximus.net/media/35597/hilarious-posts-you-can-only-find-on-tumblr-5.jpg',
+    upvotes: 0
   }
 ];

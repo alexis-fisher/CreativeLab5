@@ -1,36 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
-<script src="./javascripts/app.js"></script>
-<link rel="stylesheet" type="text/css" href="./stylesheets/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+  <script src="./javascripts/app.js"></script>
+  <link rel="stylesheet" type="text/css" href="./stylesheets/style.css">
   <meta charset="utf-8">
   <title>Creative 5</title>
 </head>
-<body>
 
-  <div id='app' ng-app='app' ng-controller='mainCtrl'>
+<body  ng-app='app' ng-controller='mainCtrl'>
 
-<h1> Enter A New Meme</h1>
+  <h1> Enter A New Meme</h1>
   <form id="newPoki" ng-submit="addPoki()">
     Name: <input type="text" ng-model="Name" value=""><br>
     Url: <input type="url" ng-model="Url" value=""><br>
     <input type="submit" value="Submit">
   </form>
 
-    <div ng-if='!pokemon.length'>
-      <h1 class='h1'>
-        Set up your endpoint at `/pokemon` to get this view working
-      </h1>
-    </div>
-
-    <ul ng-if='pokemon.length'>
-      <li ng-repeat='p in pokemon' class='pokemon'>
-        <h1>{{ p.name }}</h1>
-        <img class='avatar' ng-src="{{p.avatarUrl}}" />
-      </li>
-    </ul>
+  <div ng-if='!pokemon.length'>
+    <h2 class='h1'>
+    No pics yet! Enter a funny pic using the form above.
+    </h2>
   </div>
 
+  <ul ng-if='pokemon.length'>
+    <li>  <div ng-repeat="p in pokemon | orderBy: '-upvotes'">
+    <span>
+      <img class='avatar' ng-src={{p.avatarUrl}}> </img>
+    </span>
+    <br>  
+    <span ng-click="incrementUpvotes(p)">
+    <img class="thumbsUp" src="http://www.clipartbest.com/cliparts/Kin/LjX/KinLjXbeT.jpg"></img>
+    </span>
+    <span ng-click="decrementUpvotes(p)">
+    <img class="thumbsDown" src="https://image.freepik.com/free-icon/dislike-on-facebook-thumb-down-symbol-outline_318-37193.jpg"></img>
+    </span>
+    <span ng-click="delete(p)">
+      <img class="deleteX" src="http://www.clipartbest.com/cliparts/nTE/Rbp/nTERbpyyc.png"></img>     
+    </span>
+    {{p.name}} - upvotes: {{p.upvotes}}
+    </li></div>
+  </ul>
+  
 </body>
 </html>
