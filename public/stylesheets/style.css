@@ -40,6 +40,7 @@ div, ul {
 
 
 li {
+padding:20px;
 background-color:rgb(255,255,255);
 list-style-type: none;
 border: 1px solid black;
@@ -55,5 +56,6 @@ border-radius: 2px;
 }
 
 .avatar {
-  width: 100px;
+  margin:auto;
+  width: 80%;
 }
