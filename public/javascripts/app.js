@@ -33,24 +33,15 @@ function mainCtrl ($scope,$http, pokemonFetcher) {
       $scope.pokemon = data
     })
   $scope.addPoki = function() {
-    if($scope.Name === '') {return;}
+    if($scope.Name === '') {$scope.Name = "Anonymous";}
     if($scope.Url === '') {return;}
-    var formData = {name:$scope.Name,avatarUrl:$scope.Url};
+    var formData = {name:$scope.Name,avatarUrl:$scope.Url,upvotes:0};
     console.log(formData);
     pokemonFetcher.post(formData); // Send the data to the back end
-    $scope.create({
-      name: $scope.Name,
-      avatarUrl:$scope.Url,
-      upvotes: 0,
-    });
+    $scope.pokemon.push(formData);
     $scope.Name = '';
     $scope.Url = '';
   }
-  $scope.create = function(p) {
-    return $http.post('/pokemon',p).success(function(data){
-      $scope.pokemon.push(data);
-    });
-  };
   $scope.upvote = function(p) {
       return $http.put('/pokemon/' + p._id + '/upvote')
       .success(function(data){

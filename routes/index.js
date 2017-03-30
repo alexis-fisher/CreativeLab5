@@ -85,6 +85,13 @@ router.put('/pokemon/:p/upvote', function(req, res, next) {
   });
 });
 
+router.put('/pokemon/:p/downvote',function(req,res,next){
+  req.p.downvote(function(err,p){
+    if(err) {return next(err);}
+    res.json(p);
+  });
+});
+
 router.delete('/pokemon/:p', function(req, res) {
   console.log("in Delete");
   req.p.remove();

@@ -24,9 +24,9 @@
   </div>
 
   <ul ng-if='pokemon.length'>
-    <li>  <div ng-repeat="p in pokemon | orderBy: '-upvotes'">
-    <span>
-      <img class='avatar' ng-src={{p.avatarUrl}}> </img>
+     <div ng-repeat="p in pokemon | orderBy: '-upvotes'">
+   <li> <span>
+      <img class='avatar' ng-src="{{p.avatarUrl}}"> </img>
     </span>
     <br>  
     <span ng-click="incrementUpvotes(p)">
